@@ -142,3 +142,9 @@ myAsync3().then(result => {
     // nothing
 });
 ```
+
+## 참조사이트
+* [자바스크립트 개념잡기: 콜백 함수의 동기적 실행과 비동기적 실행](https://www.youtube.com/watch?v=j0Viy3v97gY)
+* [자바스크립트 promise? 나도 써보자, 기본 개념부터~](https://www.youtube.com/watch?v=CA5EDD4Hjz4)
+* [자바스크립트 async / await? 나도 써보자, 기본 개념부터~](https://www.youtube.com/watch?v=JzXjB6L99N4)
+* [봐도 봐도 헷갈리는 resolve, reject](https://velog.io/@rejoelve/%EB%B4%90%EB%8F%84-%EB%B4%90%EB%8F%84-%ED%97%B7%EA%B0%88%EB%A6%AC%EB%8A%94-resolve-reject)
