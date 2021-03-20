@@ -1,4 +1,4 @@
-delayP = function (sec) {
+delayP = sec => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(new Date().toISOString());
@@ -6,17 +6,19 @@ delayP = function (sec) {
     });
 }
 
-myAsync1 = async function() {
+myAsync1 = async () => {
     console.log(1, await delayP(1));
     console.log(1, await delayP(1));
     console.log(1, await delayP(1));
-    return 'myAsync1'
+
+    return 'myAsync1';
 }
 myAsync1().then(result => {
     // nothing
+    console.log(result);
 });
 
-myAsync2 = async function() {
+myAsync2 = async () => {
     console.log(2, await delayP(1));
     console.log(2, await delayP(1));
     console.log(2, await delayP(1));
@@ -24,9 +26,10 @@ myAsync2 = async function() {
 }
 myAsync2().then(result => {
     // nothing
+    console.log(result);
 });
 
-myAsync3 = async function() {
+myAsync3 = async () => {
     console.log(3, await delayP(1));
     console.log(3, await delayP(1));
     console.log(3, await delayP(1));
@@ -34,4 +37,5 @@ myAsync3 = async function() {
 }
 myAsync3().then(result => {
     // nothing
+    console.log(result);
 });

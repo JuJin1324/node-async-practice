@@ -3,7 +3,7 @@
 ### 기존 callback 지옥 구현
 callback 지옥을 위해 파라미터를 초(sec)로 받아서 대기 후 현재 시간을 로그로 출력하는 함수 delay 정의
 ```javascript
-delay = function (sec, callback) {
+delay = (sec, callback) => {
     setTimeout(() => {
         callback(new Date().toISOString());
     }, sec * 1000);
@@ -148,3 +148,39 @@ myAsync3().then(result => {
 * [자바스크립트 promise? 나도 써보자, 기본 개념부터~](https://www.youtube.com/watch?v=CA5EDD4Hjz4)
 * [자바스크립트 async / await? 나도 써보자, 기본 개념부터~](https://www.youtube.com/watch?v=JzXjB6L99N4)
 * [봐도 봐도 헷갈리는 resolve, reject](https://velog.io/@rejoelve/%EB%B4%90%EB%8F%84-%EB%B4%90%EB%8F%84-%ED%97%B7%EA%B0%88%EB%A6%AC%EB%8A%94-resolve-reject)
+
+### for await
+> for await 을 쓰려면 for 문에 사용되는 배열이 Promise 를 담은 배열이어야 한다.  
+> for await 문법은 단순히 일반 for 문 후 for 문 안에서 await 을 쓰는 것 대신에 for 뒤에 바로 await 을 붙인 것이다.  
+> ```javascript
+> delayP = (idx, sec) => {
+>     return new Promise((resolve, reject) => {
+>         setTimeout(() => {
+>             resolve({
+>                 idx: idx,
+>                 date: new Date().toISOString(),
+>             });
+>         }, sec * 1000);
+>     });
+> }
+> 
+> let promiseArr = [];
+> for (let i = 0; i < 10; i++) {
+>     promiseArr.push(delayP(i, 1));
+> }
+> 
+> async function main() {
+>     for await (let promise of promiseArr) {
+>         let {idx, date} = promise;
+>         console.log(`${idx}: ${date}`);
+>     }
+>       
+>     /* 위의 for 문과 동일하게 동작한다.
+>      * 단지 await 의 위치가 for 앞에 없으면 promise 변수는 promise 객체를,
+>      * for 뒤에 await 이 붙으면 promise 변수에는 resolve 한 객체가 들어있는 차이이다. */
+>     for (let promise of promiseArr) {
+>         let {idx, date} = await promise;
+>         console.log(`${idx}: ${date}`);
+>     }
+> }
+> ```
