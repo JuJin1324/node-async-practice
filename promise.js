@@ -1,4 +1,4 @@
-delayP = function (sec) {
+const delayP = function (sec) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(new Date().toISOString());

@@ -3,7 +3,7 @@
 ### 기존 callback 지옥 구현
 callback 지옥을 위해 파라미터를 초(sec)로 받아서 대기 후 현재 시간을 로그로 출력하는 함수 delay 정의
 ```javascript
-delay = (sec, callback) => {
+const delay = (sec, callback) => {
     setTimeout(() => {
         callback(new Date().toISOString());
     }, sec * 1000);
@@ -57,7 +57,7 @@ delay 함수의 위나 아래에 놓더라도 delay 함수보다 먼저 호출�
 ### Promise 사용
 Promise 객체를 리턴하는 delayP 함수 선언
 ```javascript
-delayP = function (sec) {
+const delayP = function (sec) {
     // 비동기 요청은 성공(resolve) 혹은 실패(reject)한다.
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -111,7 +111,7 @@ delayP = function (sec) {
 Promise 객체가 await를 만나면 Promise가 감싼 값을 리턴한다.
 ```javascript
 
-myAsync1 = async function() {
+const myAsync1 = async function() {
     // await delayP(1) 호출시 Promise 객체가 아닌 resolve() 안의 반환 값을 반환 한다.
     console.log(1, await delayP(1));
     console.log(1, await delayP(1));
@@ -122,7 +122,7 @@ myAsync1().then(result => {
     // nothing
 });
 
-myAsync2 = async function() {
+const myAsync2 = async function() {
     console.log(2, await delayP(1));
     console.log(2, await delayP(1));
     console.log(2, await delayP(1));
@@ -132,7 +132,7 @@ myAsync2().then(result => {
     // nothing
 });
 
-myAsync3 = async function() {
+const myAsync3 = async function() {
     console.log(3, await delayP(1));
     console.log(3, await delayP(1));
     console.log(3, await delayP(1));
@@ -151,9 +151,9 @@ myAsync3().then(result => {
 
 ### for await
 > for await 을 쓰려면 for 문에 사용되는 배열이 Promise 를 담은 배열이어야 한다.  
-> for await 문법은 단순히 일반 for 문 후 for 문 안에서 await 을 쓰는 것 대신에 for 뒤에 바로 await 을 붙인 것이다.  
+> for await 문법은 단순히 일반 for 문 후 for 문 안에서 await 을 쓰는 것 대신에 for 뒤에 바로 await 을 붙인 것이다.
 > ```javascript
-> delayP = (idx, sec) => {
+> const delayP = (idx, sec) => {
 >     return new Promise((resolve, reject) => {
 >         setTimeout(() => {
 >             resolve({
@@ -183,4 +183,60 @@ myAsync3().then(result => {
 >         console.log(`${idx}: ${date}`);
 >     }
 > }
+> ```
+
+### Promise.all
+> 인자로 Promise 배열을 넘겨서 Promise 배열 내부에 있는 Promise 가 모두 끝날 때 까지 기다린다.
+> ```javascript
+> const delayP = (idx, sec) => {
+>     return new Promise((resolve, reject) => {
+>         console.log(`${idx}: ${sec}초 걸리는 작업 실행 시작`);
+>         setTimeout(() => {
+>             resolve({
+>                 idx: idx,
+>                 msg: `${idx}: 작업 종료`
+>             });
+>         }, sec * 1000);
+>     });
+> }
+> 
+> let promiseArr = [];
+> for (let i = 0; i < 10; i++) {
+>     promiseArr.push(delayP(i, 5));
+> }
+> 
+> async function main() {
+>   Promise.all(promiseArr)
+>     .then(resList => {
+>         console.log('작업 모두 종료:', resList);
+>     });
+> }
+> 
+> main();
+> ```
+>
+> 결과
+> ```text
+> 0: 5초 걸리는 작업 실행 시작
+> 1: 5초 걸리는 작업 실행 시작
+> 2: 5초 걸리는 작업 실행 시작
+> 3: 5초 걸리는 작업 실행 시작
+> 4: 5초 걸리는 작업 실행 시작
+> 5: 5초 걸리는 작업 실행 시작
+> 6: 5초 걸리는 작업 실행 시작
+> 7: 5초 걸리는 작업 실행 시작
+> 8: 5초 걸리는 작업 실행 시작
+> 9: 5초 걸리는 작업 실행 시작
+> 작업 모두 종료: [
+> { idx: 0, msg: '0: 작업 종료' },
+> { idx: 1, msg: '1: 작업 종료' },
+> { idx: 2, msg: '2: 작업 종료' },
+> { idx: 3, msg: '3: 작업 종료' },
+> { idx: 4, msg: '4: 작업 종료' },
+> { idx: 5, msg: '5: 작업 종료' },
+> { idx: 6, msg: '6: 작업 종료' },
+> { idx: 7, msg: '7: 작업 종료' },
+> { idx: 8, msg: '8: 작업 종료' },
+> { idx: 9, msg: '9: 작업 종료' }
+> ]
 > ```
